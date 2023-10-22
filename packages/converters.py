@@ -60,33 +60,6 @@ class Converter:
             elif value == 2: target = key
         return [source, target]
 
-    def change_settings(self):
-        print("Converting from... \n  1. Decimal\n  2. Binary\n  3. Hexidecimal")
-        try:
-            inp1 = int(input("  >> "))
-            inp1 = self.options[inp1 - 1]
-        except:
-            print("ERROR")
-            return
-        print("To.. \n  1. Decimal\n  2. Binary\n  3. Hexidecimal")
-
-        try:
-            inp2 = int(input("  >> "))
-            inp2 = self.options[inp2 - 1]
-        except:
-            print("ERROR")
-            return
-        if(inp1 == inp2 or [inp1, inp2] == self.get_settings()):
-            print("Same selections made. No changes made.\n")
-            return
-        
-        for i in self.options:
-            self.settings[i] = 0
-
-        self.settings[inp1] = 1
-        self.settings[inp2] = 2
-        print(f"New Settings: \n  {inp1} --> {inp2}\n")
-
     def print_results(self, source, results):
         settings = self.get_settings()
         print(f"Converting {source} into {settings[1]}...")
@@ -210,7 +183,7 @@ class Converter:
         result = str()
 
         i = 0
-        if len(input) <= 2 or input[0:2] == "0x":
+        if len(input) >= 2 and input[0:2] == "0x":
                 i = 2
         while(i < len(input)):
             result += self.HexToDecSet[input[i]]
@@ -218,8 +191,3 @@ class Converter:
 
         return result
 
-
-
-test = Converter()
-test.view_settings() # dec --> bin
-test.convert("0x2BA57")
