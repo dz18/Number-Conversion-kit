@@ -1,16 +1,28 @@
-from converters import Converter
+from modules import *
 
 class user_inputs:
     tool = Converter()
     result = [None,None]
 
-    def get_input(self):
+    def menu(self):
+        print("Change Conversion (+)  |  End Program (-)")
+        print("==========================================")
+        self.view_settings()
         inp = str(input(">> "))
-        ans = self.tool.convert(inp)
-        self.result[0] = inp
-        self.result[1] = ans
-        pass
+        print()
+        if inp == '+' : self.change_settings()
+        elif inp == '-' : return False
+        else : self.make_conversion(inp)
 
+    def make_conversion(self, inp):
+        self.result = self.tool.convert(inp)
+
+    def view_settings(self):
+        for key, value in self.tool.settings.items():
+            if value == 1: source = key
+            elif value == 2: target = key
+        print(f"Current Settings = {source} --> {target}")
+        
     def change_settings(self):
         print("Converting from... \n  1. Decimal\n  2. Binary\n  3. Hexidecimal")
         try:
@@ -37,7 +49,3 @@ class user_inputs:
         self.tool.settings[inp1] = 1
         self.tool.settings[inp2] = 2
         print(f"New Settings: \n  {inp1} --> {inp2}\n")
-
-test = user_inputs()
-test.change_settings()
-test.get_input()
