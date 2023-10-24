@@ -173,14 +173,3 @@ class Converter:
             i += 1
 
         return result
-
-test = Converter()
-test.view_settings()
-print("Make Selection: Decimal (1) | Binary (2) | Hexidecimal (3)")
-inp = int(input(">> "))
-inp = test.options[inp - 1]
-print()
-test.set_source(inp)
-test.view_settings()
-test.convert("1818")
-test.print_results()
