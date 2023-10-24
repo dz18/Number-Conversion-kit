@@ -1,9 +1,8 @@
 
 class Converter: 
     options = ["Decimal", "Binary", "Hexidecimal"]
-    source = str()
+    source = "Decimal"
     hexSet = ('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F')
-    result = list()
 
     BinToHexSet = {
                "0000" : '0'
@@ -44,25 +43,26 @@ class Converter:
               }
 
     def convert(self, input):
-        self.result = [None,None,None]
         valid = self.check_input_validity(input, self.source)
+        results = ["","",""]
 
         if(not valid):
-            print(f"ERROR: INVALID INPUT")
-            return
+            pass
         
-        if self.source == "Decimal":
-            self.result[0] = input
-            self.result[1] = self.decimal_to_binary(int(input))
-            self.result[2] = self.decimal_to_hexidecimal(int(input))
+        elif self.source == "Decimal":
+            results[0] = input
+            results[1] = self.decimal_to_binary(int(input))
+            results[2] = self.decimal_to_hexidecimal(int(input))
         elif self.source == "Binary" : 
-            self.result[0] = self.binary_to_decimal(input)
-            self.result[1] = input
-            self.result[2] = self.binary_to_hexidecimal(input)
+            results[0] = self.binary_to_decimal(input)
+            results[1] = input
+            results[2] = self.binary_to_hexidecimal(input)
         elif self.source == "Hexidecimal" : 
-            self.result[0] = self.hexidecimal_to_decimal(input)
-            self.result[1] = self.hexidecimal_to_binary(input)
-            self.result[2] = input
+            results[0] = self.hexidecimal_to_decimal(input)
+            results[1] = self.hexidecimal_to_binary(input)
+            results[2] = input
+
+        return results
     
     def print_results(self):
         print(f"    Decimal: {self.result[0]}")
