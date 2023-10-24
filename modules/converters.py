@@ -1,13 +1,7 @@
 
 class Converter: 
     options = ["Decimal", "Binary", "Hexidecimal"]
-
-    settings = { # 0 = not selected, 1 = source, 2 = target
-                "Decimal" : 1,
-                "Binary" : 2,
-                "Hexidecimal" : 0
-                }
-    
+    source = str()
     hexSet = ('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F')
 
     BinToHexSet = {
@@ -48,46 +42,28 @@ class Converter:
               ,'F' : "1111"
               }
 
-    def get_settings(self):
-        for key, value in self.settings.items():
-            if value == 1: source = key
-            elif value == 2: target = key
-        return [source, target]
-
-    def print_results(self, input, results):
-        settings = self.get_settings()
-        print(f"Converting {input} into {settings[1]}...")
-        print(f"  {settings[0]}: {input}")
-        print(f"  {settings[1]}: {results}\n")
-
     def convert(self, input):
-        settings = self.get_settings()
-        result = None
-        valid = self.check_input_validity(input, settings[0])
+        result = [None,None,None]
+        valid = self.check_input_validity(input, self.source)
 
         if(not valid):
-            print(f"Input is not valid. Try again as {settings[0]}.\n")
+            print(f"ERROR: INVALID INPUT")
             return
         
-        if settings == ["Decimal", "Binary"]: 
-            input = int(input)
-            result = self.decimal_to_binary(input)
-            result = self.format_bin(result)
-        elif settings == ["Decimal", "Hexidecimal"]: 
-            input = int(input)
-            result = self.decimal_to_hexidecimal(input)
-        elif settings == ["Binary", "Decimal"]: 
-            result = self.binary_to_decimal(input)
-            input = self.format_bin(input)
-        elif settings == ["Binary", "Hexidecimal"]:
-            result = self.binary_to_hexidecimal(input)
-        elif settings == ["Hexidecimal", "Decimal"]:
-            result = self.hexidecimal_to_decimal(input)
-        elif settings == ["Hexidecimal", "Binary"]:
-            result = self.hexidecimal_to_binary(input)
+        if self.source == "Decimal":
+            result[0] = input
+            result[1] = self.decimal_to_binary(input)
+            result[2] = self.decimal_to_hexidecimal(input)
+        elif self.source == "Binary" : 
+            result[0] = self.binary_to_decimal(input)
+            result[1] = input
+            result[2] = self.binary_to_hexidecimal(input)
+        elif self.source == "Hexidecimal" : 
+            result[0] = self.hexidecimal_to_decimal(input)
+            result[1] = self.hexidecimal_to_binary(input)
+            result[2] = input
 
-        self.print_results(input, result)
-        return [input, result]
+        return result
     
     def check_input_validity(self, input, source):
         if source == "Decimal":
@@ -130,6 +106,12 @@ class Converter:
 
         result = result[:len(result) - 1]
         return result
+    
+    def view_settings(self):
+        print(f"Current Source: {self.source}\n")
+
+    def set_source(self, new_source):
+        self.source = new_source
 
     def decimal_to_binary(self, input):
         i ,prev = input, input
@@ -188,3 +170,12 @@ class Converter:
 
         return result
 
+test = Converter()
+test.view_settings()
+print("Make Selection: Decimal (1) | Binary (2) | Hexidecimal (3)")
+inp = int(input(">> "))
+inp = test.options[inp - 1]
+print()
+test.set_source(inp)
+test.view_settings()
+test.convert("1818")
