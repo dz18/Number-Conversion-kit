@@ -3,6 +3,7 @@ class Converter:
     options = ["Decimal", "Binary", "Hexidecimal"]
     source = str()
     hexSet = ('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F')
+    result = list()
 
     BinToHexSet = {
                "0000" : '0'
@@ -43,7 +44,7 @@ class Converter:
               }
 
     def convert(self, input):
-        result = [None,None,None]
+        self.result = [None,None,None]
         valid = self.check_input_validity(input, self.source)
 
         if(not valid):
@@ -51,19 +52,22 @@ class Converter:
             return
         
         if self.source == "Decimal":
-            result[0] = input
-            result[1] = self.decimal_to_binary(input)
-            result[2] = self.decimal_to_hexidecimal(input)
+            self.result[0] = input
+            self.result[1] = self.decimal_to_binary(int(input))
+            self.result[2] = self.decimal_to_hexidecimal(int(input))
         elif self.source == "Binary" : 
-            result[0] = self.binary_to_decimal(input)
-            result[1] = input
-            result[2] = self.binary_to_hexidecimal(input)
+            self.result[0] = self.binary_to_decimal(input)
+            self.result[1] = input
+            self.result[2] = self.binary_to_hexidecimal(input)
         elif self.source == "Hexidecimal" : 
-            result[0] = self.hexidecimal_to_decimal(input)
-            result[1] = self.hexidecimal_to_binary(input)
-            result[2] = input
-
-        return result
+            self.result[0] = self.hexidecimal_to_decimal(input)
+            self.result[1] = self.hexidecimal_to_binary(input)
+            self.result[2] = input
+    
+    def print_results(self):
+        print(f"    Decimal: {self.result[0]}")
+        print(f"     Binary: {self.format_bin(self.result[1])}")
+        print(f"Hexidecimal: {self.result[2]}")
     
     def check_input_validity(self, input, source):
         if source == "Decimal":
@@ -179,3 +183,4 @@ print()
 test.set_source(inp)
 test.view_settings()
 test.convert("1818")
+test.print_results()
